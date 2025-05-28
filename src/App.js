@@ -17,8 +17,10 @@ const Navbar = ({ currentPage, setCurrentPage }) => {
     return (
         <nav className="bg-white shadow-md p-4 sticky top-0 z-50">
             <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
-                <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0">Mayurastonex</h1>
-                <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-lg">
+                {/* Company name aligned to left */}
+                <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0 md:mr-8">Mayurastonex</h1>
+                {/* Navigation links aligned to left and horizontally */}
+                <ul className="flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-2 text-lg">
                     {navItems.map((item) => (
                         <li key={item.page}>
                             <button
@@ -74,7 +76,8 @@ const Home = ({ setCurrentPage }) => {
 };
 
 // About Component
-const About = () => {
+// Added setCurrentPage prop and buttons here
+const About = ({ setCurrentPage }) => {
     return (
         <div className="container mx-auto p-8 my-8 bg-white rounded-xl shadow-lg">
             <h2 className="text-4xl font-bold text-gray-800 mb-6 text-center">About Mayurastonex</h2>
@@ -84,9 +87,24 @@ const About = () => {
             <p className="text-lg text-gray-700 leading-relaxed mb-4">
                 Our passion for stone is reflected in our diverse collection, ranging from the vibrant hues of Indian granites and marbles to the sophisticated elegance of luxury imported stones. We cater to a wide array of applications, including flooring, countertops, wall cladding, and bespoke architectural elements.
             </p>
-            <p className="text-lg text-gray-700 leading-relaxed">
+            <p className="text-lg text-gray-700 leading-relaxed mb-8">
                 At Mayurastonex, we pride ourselves on our meticulous selection process, ethical sourcing practices, and unwavering dedication to customer satisfaction. Let us help you transform your vision into reality with the timeless allure of natural stone.
             </p>
+            {/* Discover/Explore Buttons added here */}
+            <div className="flex flex-col sm:flex-row gap-6 justify-center mt-8 pt-8 border-t border-gray-200">
+                <button
+                    onClick={() => setCurrentPage('indian-stone')}
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50"
+                >
+                    Discover Indian Stone
+                </button>
+                <button
+                    onClick={() => setCurrentPage('luxury-stone')}
+                    className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-500 focus:ring-opacity-50"
+                >
+                    Explore Luxury Stone
+                </button>
+            </div>
         </div>
     );
 };
@@ -206,7 +224,7 @@ const ProductCard = ({ product, onEnquire }) => {
                 <div className="mt-auto"> {/* Pushes button to the bottom */}
                     <button
                         onClick={() => onEnquire(product)}
-                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 shadow-md transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50"
+                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-8 rounded-lg transition-colors duration-300 shadow-md transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50"
                     >
                         Enquire Now
                     </button>
@@ -221,6 +239,7 @@ const StoneCategory = ({ categoryName, products, onEnquire }) => {
     return (
         <div className="container mx-auto p-8 my-8 bg-white rounded-xl shadow-lg">
             <h2 className="text-4xl font-bold text-gray-800 mb-8 text-center">{categoryName}</h2>
+            {/* Changed grid to display 4 products per row on large screens */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                 {products.map((product) => (
                     <ProductCard key={product.name} product={product} onEnquire={onEnquire} />
@@ -422,7 +441,8 @@ const App = () => {
             case 'home':
                 return <Home setCurrentPage={setCurrentPage} />;
             case 'about':
-                return <About />;
+                // Pass setCurrentPage to About component
+                return <About setCurrentPage={setCurrentPage} />;
             case 'indian-stone':
                 return <StoneCategory categoryName="Indian Stone Collection" products={indianStoneProducts} onEnquire={handleEnquireClick} />;
             case 'luxury-stone':
