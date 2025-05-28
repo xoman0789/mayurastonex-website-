@@ -21,7 +21,6 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedStone, setSelectedStone] = useState(null);
   const enquiryFormRef = useRef(null);
-  const contactFormRef = useRef(null);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -198,9 +197,9 @@ function App() {
         </section>
       </main>
 
-      <footer className="App-footer">
+      <footer>
         <div className="container">
-          <p>&copy; {new Date().getFullYear()} Mayurastonex. All rights reserved.</p>
+          <p>&copy; 2025 Mayurastonex. All rights reserved.</p>
         </div>
       </footer>
     </div>
