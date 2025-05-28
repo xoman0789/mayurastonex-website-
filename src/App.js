@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
-import { Menu, X, Phone, Mail, MapPin } from 'lucide-react'; // Removed ChevronLeft, ChevronRight
+import { Menu, X, Phone, Mail, MapPin } from 'lucide-react';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -43,7 +43,8 @@ function App() {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [handleScroll]); // FIX: Added handleScroll to dependency array
+
 
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
@@ -62,37 +63,7 @@ function App() {
     autoplay: true,
     autoplaySpeed: 3000,
     arrows: true,
-    // nextArrow: <SampleNextArrow />, // Commented out as ChevronRight is unused
-    // prevArrow: <SamplePrevArrow />  // Commented out as ChevronLeft is unused
   };
-
-  // // Removed because ChevronLeft was not used
-  // function SampleNextArrow(props) {
-  //   const { className, style, onClick } = props;
-  //   return (
-  //     <div
-  //       className={className}
-  //       style={{ ...style, display: "block", right: "25px", zIndex: 1 }}
-  //       onClick={onClick}
-  //     >
-  //       <ChevronRight size={32} color="#fff" />
-  //     </div>
-  //   );
-  // }
-
-  // // Removed because ChevronRight was not used
-  // function SamplePrevArrow(props) {
-  //   const { className, style, onClick } = props;
-  //   return (
-  //     <div
-  //       className={className}
-  //       style={{ ...style, display: "block", left: "25px", zIndex: 1 }}
-  //       onClick={onClick}
-  //     >
-  //       <ChevronLeft size={32} color="#fff" />
-  //     </div>
-  //   );
-  // }
 
 
   const stones = [
@@ -139,7 +110,7 @@ function App() {
     e.preventDefault();
     const form = e.target;
     const formData = new FormData(form);
-    const formName = form.getAttribute('name'); // Get the form's name attribute
+    // const formName = form.getAttribute('name'); // FIX: Removed as it was assigned but never used
 
     try {
       const response = await fetch('/', {
