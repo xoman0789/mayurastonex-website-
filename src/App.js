@@ -5,12 +5,12 @@ import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-// Assuming you want to use the images directly from public/images
+// Placeholder images for the hero section
 const images = [
-  '/images/img1.webp',
-  '/images/img2.webp',
-  '/images/img3.webp',
-  '/images/img4.webp',
+  'https://placehold.co/1920x1080/2c3e50/ffffff?text=Mayurastonex+Stone+1',
+  'https://placehold.co/1920x1080/34495e/ffffff?text=Mayurastonex+Stone+2',
+  'https://placehold.co/1920x1080/1abc9c/ffffff?text=Mayurastonex+Stone+3',
+  'https://placehold.co/1920x1080/f39c12/ffffff?text=Mayurastonex+Stone+4',
 ];
 
 // Moved sections array outside the component to make it a truly stable constant
@@ -28,35 +28,32 @@ function App() {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  // FIX: Wrapped handleScroll with useCallback and used functional update for setActiveSection
   const handleScroll = useCallback(() => {
     const scrollPosition = window.scrollY + window.innerHeight / 2;
-    // Use functional update for setActiveSection to avoid it being a dependency of useCallback
     setActiveSection(prevActiveSection => {
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element && scrollPosition >= element.offsetTop && scrollPosition < element.offsetTop + element.offsetHeight) {
-          return section; // Return the new active section
+          return section;
         }
       }
-      return prevActiveSection; // If no section found, keep current active section
+      return prevActiveSection;
     });
-  }, []); // Dependencies for useCallback: sections is now outside, setActiveSection uses functional update, so no dependencies needed here
+  }, []);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [handleScroll]); // handleScroll is now a stable dependency due to useCallback
-
+  }, [handleScroll]);
 
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
-    setIsMenuOpen(false); // Close menu on navigation
+    setIsMenuOpen(false);
   };
 
   const carouselSettings = {
@@ -70,14 +67,14 @@ function App() {
     arrows: true,
   };
 
-
+  // Updated stones array with placeholder image URLs
   const stones = [
-    { id: 1, name: 'Carrara Marble', type: 'Italian Marble', image: '/images/marble1.webp', description: 'Classic white marble with delicate grey veining.' },
-    { id: 2, name: 'Calacatta Marble', type: 'Italian Marble', image: '/images/marble2.webp', description: 'Rare and luxurious white marble with dramatic veining.' },
-    { id: 3, name: 'Indian Green Marble', type: 'Indian Marble', image: '/images/marble3.webp', description: 'Vibrant green marble with a distinctive pattern.' },
-    { id: 4, name: 'Absolute Black Granite', type: 'Indian Granite', image: '/images/granite1.webp', description: 'Solid black granite, perfect for contemporary designs.' },
-    { id: 5, name: 'Tan Brown Granite', type: 'Indian Granite', image: '/images/granite2.webp', description: 'Dark brown granite with reddish-brown and black speckles.' },
-    { id: 6, name: 'Rainforest Green Marble', type: 'Indian Marble', image: '/images/marble4.webp', description: 'Exotic green marble with tree-like veining.' },
+    { id: 1, name: 'Carrara Marble', type: 'Italian Marble', image: 'https://placehold.co/400x200/cccccc/333333?text=Carrara+Marble', description: 'Classic white marble with delicate grey veining.' },
+    { id: 2, name: 'Calacatta Marble', type: 'Italian Marble', image: 'https://placehold.co/400x200/cccccc/333333?text=Calacatta+Marble', description: 'Rare and luxurious white marble with dramatic veining.' },
+    { id: 3, name: 'Indian Green Marble', type: 'Indian Marble', image: 'https://placehold.co/400x200/4CAF50/ffffff?text=Indian+Green+Marble', description: 'Vibrant green marble with a distinctive pattern.' },
+    { id: 4, name: 'Absolute Black Granite', type: 'Indian Granite', image: 'https://placehold.co/400x200/000000/ffffff?text=Absolute+Black+Granite', description: 'Solid black granite, perfect for contemporary designs.' },
+    { id: 5, name: 'Tan Brown Granite', type: 'Indian Granite', image: 'https://placehold.co/400x200/8B4513/ffffff?text=Tan+Brown+Granite', description: 'Dark brown granite with reddish-brown and black specks.' },
+    { id: 6, name: 'Rainforest Green Marble', type: 'Indian Marble', image: 'https://placehold.co/400x200/228B22/ffffff?text=Rainforest+Green+Marble', description: 'Exotic green marble with tree-like veining.' },
   ];
 
   const openModal = (stone) => {
@@ -90,7 +87,6 @@ function App() {
     setSelectedStone(null);
   };
 
-  // StoneDetailsModal component (defined inline as it's simple or could be moved to its own file)
   const StoneDetailsModal = ({ stone, onClose }) => {
     if (!stone) return null;
 
@@ -109,13 +105,10 @@ function App() {
     );
   };
 
-  // End of StoneDetailsModal component
-
   const handleSubmit = async (e, formType) => {
     e.preventDefault();
     const form = e.target;
     const formData = new FormData(form);
-    // const formName = form.getAttribute('name'); // FIX: Removed as it was assigned but never used
 
     try {
       const response = await fetch('/', {
@@ -126,7 +119,7 @@ function App() {
 
       if (response.ok) {
         alert(`${formType} submitted successfully! We will get back to you soon.`);
-        form.reset(); // Clear the form
+        form.reset();
       } else {
         alert(`Failed to submit ${formType}. Please try again.`);
       }
@@ -209,12 +202,12 @@ function App() {
           <div className="container">
             <h2>Gallery</h2>
             <div className="gallery-grid">
-              <img src="/images/gallery1.webp" alt="Gallery 1" />
-              <img src="/images/gallery2.webp" alt="Gallery 2" />
-              <img src="/images/gallery3.webp" alt="Gallery 3" />
-              <img src="/images/gallery4.webp" alt="Gallery 4" />
-              <img src="/images/gallery5.webp" alt="Gallery 5" />
-              <img src="/images/gallery6.webp" alt="Gallery 6" />
+              <img src="https://placehold.co/400x250/2c3e50/ffffff?text=Gallery+1" alt="Gallery 1" />
+              <img src="https://placehold.co/400x250/34495e/ffffff?text=Gallery+2" alt="Gallery 2" />
+              <img src="https://placehold.co/400x250/1abc9c/ffffff?text=Gallery+3" alt="Gallery 3" />
+              <img src="https://placehold.co/400x250/f39c12/ffffff?text=Gallery+4" alt="Gallery 4" />
+              <img src="https://placehold.co/400x250/e67e22/ffffff?text=Gallery+5" alt="Gallery 5" />
+              <img src="https://placehold.co/400x250/9b59b6/ffffff?text=Gallery+6" alt="Gallery 6" />
             </div>
           </div>
         </section>
@@ -276,4 +269,3 @@ function App() {
 }
 
 export default App;
-
