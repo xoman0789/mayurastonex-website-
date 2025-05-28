@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react'; // Added useCallback
 import './App.css';
 import { Menu, X, Phone, Mail, MapPin } from 'lucide-react';
 import Slider from 'react-slick';
@@ -27,7 +27,8 @@ function App() {
 
   const sections = ['home', 'about', 'products', 'gallery', 'contact'];
 
-  const handleScroll = () => {
+  // FIX: Wrapped handleScroll with useCallback
+  const handleScroll = useCallback(() => {
     const scrollPosition = window.scrollY + window.innerHeight / 2;
     for (const section of sections) {
       const element = document.getElementById(section);
@@ -36,15 +37,14 @@ function App() {
         break;
       }
     }
-  };
+  }, [sections, setActiveSection]); // Dependencies for useCallback: sections (constant) and setActiveSection (stable state setter)
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [handleScroll]); // FIX: Added handleScroll to dependency array
-
+  }, [handleScroll]); // FIX: handleScroll is now a stable dependency
 
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
@@ -71,7 +71,7 @@ function App() {
     { id: 2, name: 'Calacatta Marble', type: 'Italian Marble', image: '/images/marble2.webp', description: 'Rare and luxurious white marble with dramatic veining.' },
     { id: 3, name: 'Indian Green Marble', type: 'Indian Marble', image: '/images/marble3.webp', description: 'Vibrant green marble with a distinctive pattern.' },
     { id: 4, name: 'Absolute Black Granite', type: 'Indian Granite', image: '/images/granite1.webp', description: 'Solid black granite, perfect for contemporary designs.' },
-    { id: 5, name: 'Tan Brown Granite', type: 'Indian Granite', image: '/images/granite2.webp', description: 'Dark brown granite with reddish-brown and black specks.' },
+    { id: 5, name: 'Tan Brown Granite', type: 'Indian Granite', image: '/images/granite2.webp', description: 'Dark brown granite with reddish-brown and black speckles.' },
     { id: 6, name: 'Rainforest Green Marble', type: 'Indian Marble', image: '/images/marble4.webp', description: 'Exotic green marble with tree-like veining.' },
   ];
 
