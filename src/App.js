@@ -1,3 +1,4 @@
+// App.js
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './App.css';
 import { Menu, X, Phone, Mail, MapPin } from 'lucide-react';
@@ -5,7 +6,6 @@ import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-// Placeholder images for the hero section
 const images = [
   'https://placehold.co/1920x1080/2c3e50/ffffff?text=Mayurastonex+Stone+1',
   'https://placehold.co/1920x1080/34495e/ffffff?text=Mayurastonex+Stone+2',
@@ -13,8 +13,7 @@ const images = [
   'https://placehold.co/1920x1080/f39c12/ffffff?text=Mayurastonex+Stone+4',
 ];
 
-// Moved sections array outside the component to make it a truly stable constant
-const sections = ['home', 'about', 'products', 'gallery', 'contact'];
+const sections = ['home', 'about', 'products', 'contact'];
 
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,50 +23,38 @@ function App() {
   const enquiryFormRef = useRef(null);
   const contactFormRef = useRef(null);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const handleScroll = useCallback(() => {
     const scrollPosition = window.scrollY + window.innerHeight / 2;
-    setActiveSection(prevActiveSection => {
+    setActiveSection(prev => {
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element && scrollPosition >= element.offsetTop && scrollPosition < element.offsetTop + element.offsetHeight) {
           return section;
         }
       }
-      return prevActiveSection;
+      return prev;
     });
   }, []);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (element) element.scrollIntoView({ behavior: 'smooth' });
     setIsMenuOpen(false);
   };
 
   const carouselSettings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    arrows: true,
+    dots: true, infinite: true, speed: 500,
+    slidesToShow: 1, slidesToScroll: 1,
+    autoplay: true, autoplaySpeed: 3000, arrows: true,
   };
 
-  // Updated stones array with placeholder image URLs
   const stones = [
     { id: 1, name: 'Carrara Marble', type: 'Italian Marble', image: 'https://placehold.co/400x200/cccccc/333333?text=Carrara+Marble', description: 'Classic white marble with delicate grey veining.' },
     { id: 2, name: 'Calacatta Marble', type: 'Italian Marble', image: 'https://placehold.co/400x200/cccccc/333333?text=Calacatta+Marble', description: 'Rare and luxurious white marble with dramatic veining.' },
@@ -89,13 +76,10 @@ function App() {
 
   const StoneDetailsModal = ({ stone, onClose }) => {
     if (!stone) return null;
-
     return (
       <div className="modal-overlay" onClick={onClose}>
         <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-          <button className="modal-close-button" onClick={onClose}>
-            &times;
-          </button>
+          <button className="modal-close-button" onClick={onClose}>&times;</button>
           <h2>{stone.name}</h2>
           <img src={stone.image} alt={stone.name} className="modal-image" />
           <p><strong>Type:</strong> {stone.type}</p>
@@ -129,7 +113,6 @@ function App() {
     }
   };
 
-
   return (
     <div className="App">
       <header className="App-header">
@@ -137,19 +120,12 @@ function App() {
           <h1 className="logo" onClick={() => scrollToSection('home')}>Mayurastonex</h1>
           <nav className={`nav ${isMenuOpen ? 'open' : ''}`}>
             {sections.map(section => (
-              <a
-                key={section}
-                href={`#${section}`}
-                className={activeSection === section ? 'active' : ''}
-                onClick={() => scrollToSection(section)}
-              >
+              <a key={section} href={`#${section}`} className={activeSection === section ? 'active' : ''} onClick={() => scrollToSection(section)}>
                 {section.charAt(0).toUpperCase() + section.slice(1)}
               </a>
             ))}
           </nav>
-          <div className="menu-icon" onClick={toggleMenu}>
-            {isMenuOpen ? <X size={32} /> : <Menu size={32} />}
-          </div>
+          <div className="menu-icon" onClick={toggleMenu}>{isMenuOpen ? <X size={32} /> : <Menu size={32} />}</div>
         </div>
       </header>
 
@@ -162,7 +138,10 @@ function App() {
                 <div className="hero-overlay">
                   <h2>Connecting the world with exquisite Indian and Italian natural stone.</h2>
                   <p>Your trusted partner for premium quality marble and granite export.</p>
-                  <button onClick={() => scrollToSection('products')} className="hero-button">Explore Products</button>
+                  <div className="hero-buttons">
+                    <button className="hero-button" onClick={() => window.location.href = '/indian-stone.html'}>Discover Indian Stone</button>
+                    <button className="hero-button" onClick={() => window.location.href = '/luxury-stone.html'}>Discover Luxury Stone</button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -172,8 +151,7 @@ function App() {
         <section id="about" className="about-section">
           <div className="container">
             <h2>About Mayurastonex</h2>
-            <p>Mayurastonex is a leading manufacturer and exporter of premium Indian and Italian natural stone. With years of experience and a commitment to quality, we bring the finest marble and granite from quarries directly to your projects worldwide. Our state-of-the-art processing units ensure superior finish and precise dimensions, meeting international standards.</p>
-            <p>We pride ourselves on our ethical sourcing, sustainable practices, and unwavering dedication to customer satisfaction. Partner with us for unparalleled quality and reliability in natural stone supply.</p>
+            <p>Mayurastonex is a leading manufacturer and exporter of premium Indian and Italian natural stone...</p>
           </div>
         </section>
 
@@ -194,23 +172,7 @@ function App() {
           </div>
         </section>
 
-        {isModalOpen && (
-          <StoneDetailsModal stone={selectedStone} onClose={closeModal} />
-        )}
-
-        <section id="gallery" className="gallery-section">
-          <div className="container">
-            <h2>Gallery</h2>
-            <div className="gallery-grid">
-              <img src="https://placehold.co/400x250/2c3e50/ffffff?text=Gallery+1" alt="Gallery 1" />
-              <img src="https://placehold.co/400x250/34495e/ffffff?text=Gallery+2" alt="Gallery 2" />
-              <img src="https://placehold.co/400x250/1abc9c/ffffff?text=Gallery+3" alt="Gallery 3" />
-              <img src="https://placehold.co/400x250/f39c12/ffffff?text=Gallery+4" alt="Gallery 4" />
-              <img src="https://placehold.co/400x250/e67e22/ffffff?text=Gallery+5" alt="Gallery 5" />
-              <img src="https://placehold.co/400x250/9b59b6/ffffff?text=Gallery+6" alt="Gallery 6" />
-            </div>
-          </div>
-        </section>
+        {isModalOpen && (<StoneDetailsModal stone={selectedStone} onClose={closeModal} />)}
 
         <section id="contact" className="contact-section">
           <div className="container">
@@ -218,37 +180,18 @@ function App() {
             <p>Have questions or need a quote? Reach out to us!</p>
             <div className="contact-flex">
               <div className="contact-info">
-                <h3>Get in Touch</h3>
                 <p><Phone size={20} /> +91-9928178120</p>
                 <p><Mail size={20} /> rishabhjainca0789@gmail.com</p>
                 <p><MapPin size={20} /> Kishangarh, Rajasthan, India</p>
-                <p>We are available to assist you during business hours.</p>
-                <p>Monday - Friday: 9:00 AM - 6:00 PM (IST)</p>
               </div>
-
               <div className="contact-forms">
-                <div className="form-card">
-                  <h3>General Enquiry</h3>
-                  <form name="enquiry" method="POST" data-netlify="true" onSubmit={(e) => handleSubmit(e, 'Enquiry')} ref={enquiryFormRef}>
-                    <input type="hidden" name="form-name" value="enquiry" />
-                    <input type="text" name="name" placeholder="Your Name" required />
-                    <input type="email" name="email" placeholder="Your Email" required />
-                    <input type="tel" name="phone" placeholder="Your Phone (Optional)" />
-                    <textarea name="message" placeholder="Your Message" rows="4" required></textarea>
-                    <button type="submit">Send Enquiry</button>
-                  </form>
-                </div>
-
-                <div className="form-card">
-                  <h3>Direct Contact</h3>
-                  <form name="contact" method="POST" data-netlify="true" onSubmit={(e) => handleSubmit(e, 'Contact')} ref={contactFormRef}>
-                    <input type="hidden" name="form-name" value="contact" />
-                    <input type="text" name="name" placeholder="Your Name" required />
-                    <input type="email" name="email" placeholder="Your Email" required />
-                    <textarea name="message" placeholder="Your specific query or message" rows="4" required></textarea>
-                    <button type="submit">Send Message</button>
-                  </form>
-                </div>
+                <form name="enquiry" method="POST" data-netlify="true" onSubmit={(e) => handleSubmit(e, 'Enquiry')} ref={enquiryFormRef}>
+                  <input type="hidden" name="form-name" value="enquiry" />
+                  <input type="text" name="name" placeholder="Your Name" required />
+                  <input type="email" name="email" placeholder="Your Email" required />
+                  <textarea name="message" placeholder="Your Message" required></textarea>
+                  <button type="submit">Send Enquiry</button>
+                </form>
               </div>
             </div>
           </div>
@@ -258,10 +201,6 @@ function App() {
       <footer className="App-footer">
         <div className="container">
           <p>&copy; {new Date().getFullYear()} Mayurastonex. All rights reserved.</p>
-          <div className="footer-links">
-            <a href="#privacy" onClick={() => alert('Privacy Policy under development')}>Privacy Policy</a>
-            <a href="#terms" onClick={() => alert('Terms of Service under development')}>Terms of Service</a>
-          </div>
         </div>
       </footer>
     </div>
