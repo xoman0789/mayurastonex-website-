@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'; // Added useCallback
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './App.css';
 import { Menu, X, Phone, Mail, MapPin } from 'lucide-react';
 import Slider from 'react-slick';
@@ -13,6 +13,9 @@ const images = [
   '/images/img4.webp',
 ];
 
+// Moved sections array outside the component to make it a truly stable constant
+const sections = ['home', 'about', 'products', 'gallery', 'contact'];
+
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
@@ -25,26 +28,28 @@ function App() {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const sections = ['home', 'about', 'products', 'gallery', 'contact'];
-
-  // FIX: Wrapped handleScroll with useCallback
+  // FIX: Wrapped handleScroll with useCallback and used functional update for setActiveSection
   const handleScroll = useCallback(() => {
     const scrollPosition = window.scrollY + window.innerHeight / 2;
-    for (const section of sections) {
-      const element = document.getElementById(section);
-      if (element && scrollPosition >= element.offsetTop && scrollPosition < element.offsetTop + element.offsetHeight) {
-        setActiveSection(section);
-        break;
+    // Use functional update for setActiveSection to avoid it being a dependency of useCallback
+    setActiveSection(prevActiveSection => {
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element && scrollPosition >= element.offsetTop && scrollPosition < element.offsetTop + element.offsetHeight) {
+          return section; // Return the new active section
+        }
       }
-    }
-  }, [sections, setActiveSection]); // Dependencies for useCallback: sections (constant) and setActiveSection (stable state setter)
+      return prevActiveSection; // If no section found, keep current active section
+    });
+  }, []); // Dependencies for useCallback: sections is now outside, setActiveSection uses functional update, so no dependencies needed here
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [handleScroll]); // FIX: handleScroll is now a stable dependency
+  }, [handleScroll]); // handleScroll is now a stable dependency due to useCallback
+
 
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
