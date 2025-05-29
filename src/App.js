@@ -1,474 +1,393 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from "react";
 
-// Helper function to generate placeholder image URLs
-const getPlaceholderImage = (width, height, text) =>
-    `https://placehold.co/${width}x${height}/a8a8a8/ffffff?text=${encodeURIComponent(text)}`;
-
-// Navbar Component
-const Navbar = ({ currentPage, setCurrentPage }) => {
-    const navItems = [
-        { name: 'Home', page: 'home' },
-        { name: 'About', page: 'about' },
-        { name: 'Indian Stone', page: 'indian-stone' },
-        { name: 'Luxury Stone', page: 'luxury-stone' },
-        { name: 'Contact', page: 'contact' },
-    ];
-
-    return (
-        <nav className="bg-white shadow-md p-4 sticky top-0 z-50">
-            <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
-                {/* Company name aligned to left */}
-                <h1 className="text-3xl font-bold text-gray-800 mb-4 md:mb-0 md:mr-8">Mayurastonex</h1>
-                {/* Navigation links aligned to left and horizontally */}
-                <ul className="flex flex-wrap justify-center md:justify-start gap-x-6 gap-y-2 text-lg">
-                    {navItems.map((item) => (
-                        <li key={item.page}>
-                            <button
-                                onClick={() => setCurrentPage(item.page)}
-                                className={`px-4 py-2 rounded-lg transition-colors duration-300
-                                    ${currentPage === item.page
-                                        ? 'bg-indigo-600 text-white shadow-lg'
-                                        : 'text-gray-700 hover:bg-gray-100 hover:text-indigo-600'
-                                    }`}
-                            >
-                                {item.name}
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        </nav>
-    );
-};
-
-// Home Component
-const Home = ({ setCurrentPage }) => {
-    return (
-        <div className="relative w-full h-[60vh] md:h-[80vh] flex items-center justify-center overflow-hidden">
-            {/* Placeholder for premises photo */}
-            <img
-                src={getPlaceholderImage(1920, 1080, 'Your Premises Photo Here')}
-                alt="Company Premises"
-                className="absolute inset-0 w-full h-full object-cover filter brightness-75"
-                onError={(e) => { e.target.src = getPlaceholderImage(1920, 1080, 'Image Not Found'); }}
-            />
-            <div className="relative z-10 text-center p-6 bg-black bg-opacity-40 rounded-xl shadow-2xl">
-                <h2 className="text-4xl md:text-6xl font-extrabold text-white mb-8 leading-tight">
-                    Discover the Elegance of Stone
-                </h2>
-                <div className="flex flex-col sm:flex-row gap-6 justify-center">
-                    <button
-                        onClick={() => setCurrentPage('indian-stone')}
-                        className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50"
-                    >
-                        Discover Indian Stone
-                    </button>
-                    <button
-                        onClick={() => setCurrentPage('luxury-stone')}
-                        className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-500 focus:ring-opacity-50"
-                    >
-                        Explore Luxury Stone
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
-};
-
-// About Component
-// Added setCurrentPage prop and buttons here
-const About = ({ setCurrentPage }) => {
-    return (
-        <div className="container mx-auto p-8 my-8 bg-white rounded-xl shadow-lg">
-            <h2 className="text-4xl font-bold text-gray-800 mb-6 text-center">About Mayurastonex</h2>
-            <p className="text-lg text-gray-700 leading-relaxed mb-4">
-                Welcome to Mayurastonex, your premier destination for exquisite natural stones. With years of expertise in sourcing and supplying the finest Indian and international stones, we are committed to delivering unparalleled quality and beauty for your projects.
-            </p>
-            <p className="text-lg text-gray-700 leading-relaxed mb-4">
-                Our passion for stone is reflected in our diverse collection, ranging from the vibrant hues of Indian granites and marbles to the sophisticated elegance of luxury imported stones. We cater to a wide array of applications, including flooring, countertops, wall cladding, and bespoke architectural elements.
-            </p>
-            <p className="text-lg text-gray-700 leading-relaxed mb-8">
-                At Mayurastonex, we pride ourselves on our meticulous selection process, ethical sourcing practices, and unwavering dedication to customer satisfaction. Let us help you transform your vision into reality with the timeless allure of natural stone.
-            </p>
-            {/* Discover/Explore Buttons added here */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center mt-8 pt-8 border-t border-gray-200">
-                <button
-                    onClick={() => setCurrentPage('indian-stone')}
-                    className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50"
-                >
-                    Discover Indian Stone
-                </button>
-                <button
-                    onClick={() => setCurrentPage('luxury-stone')}
-                    className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-4 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-500 focus:ring-opacity-50"
-                >
-                    Explore Luxury Stone
-                </button>
-            </div>
-        </div>
-    );
-};
-
-// Contact Component
-const Contact = () => {
-    return (
-        <div className="container mx-auto p-8 my-8 bg-white rounded-xl shadow-lg">
-            <h2 className="text-4xl font-bold text-gray-800 mb-6 text-center">Contact Us</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-lg text-gray-700">
-                <div>
-                    <h3 className="text-2xl font-semibold text-gray-800 mb-4">Get in Touch</h3>
-                    <p className="mb-2"><i className="fas fa-map-marker-alt mr-3 text-indigo-600"></i>123 Stone Street, Marble City, India</p>
-                    <p className="mb-2"><i className="fas fa-phone mr-3 text-indigo-600"></i>+91 98765 43210</p>
-                    <p className="mb-2"><i className="fas fa-envelope mr-3 text-indigo-600"></i>info@mayurastonex.com</p>
-                    <p className="mb-2"><i className="fas fa-clock mr-3 text-indigo-600"></i>Mon - Sat: 9:00 AM - 6:00 PM</p>
-                </div>
-                <div>
-                    <h3 className="text-2xl font-semibold text-gray-800 mb-4">Send us a Message</h3>
-                    <form className="space-y-4">
-                        <div>
-                            <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">Name</label>
-                            <input type="text" id="name" name="name" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-indigo-500" placeholder="Your Name" />
-                        </div>
-                        <div>
-                            <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">Email</label>
-                            <input type="email" id="email" name="email" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-indigo-500" placeholder="your@example.com" />
-                        </div>
-                        <div>
-                            <label htmlFor="message" className="block text-gray-700 text-sm font-bold mb-2">Message</label>
-                            <textarea id="message" name="message" rows="4" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-indigo-500" placeholder="Your message..."></textarea>
-                        </div>
-                        <button type="submit" className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 shadow-md">
-                            Send Message
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    );
-};
-
-// Product Card Component
-const ProductCard = ({ product, onEnquire }) => {
-    const [description, setDescription] = useState(product.description || 'Loading description...');
-    const [isLoading, setIsLoading] = useState(!product.description);
-    const [error, setError] = useState(null);
-
-    // Function to fetch AI-generated description
-    const fetchDescription = useCallback(async () => {
-        if (product.description && product.description !== 'Loading description...') {
-            setIsLoading(false);
-            return; // Already has a description
-        }
-
-        setIsLoading(true);
-        setError(null);
-        const prompt = `Generate a concise, appealing description for ${product.name} known for its use in construction, flooring, or decorative purposes. Focus on its appearance, durability, and unique characteristics. Keep it under 50 words.`;
-        let chatHistory = [];
-        chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-        const payload = { contents: chatHistory };
-        const apiKey = ""; // Canvas will automatically provide this in runtime
-
-        try {
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const result = await response.json();
-
-            if (result.candidates && result.candidates.length > 0 &&
-                result.candidates[0].content && result.candidates[0].content.parts &&
-                result.candidates[0].content.parts.length > 0) {
-                const text = result.candidates[0].content.parts[0].text;
-                setDescription(text);
-            } else {
-                setDescription('Description not available.');
-                console.error('Unexpected API response structure:', result);
-            }
-        } catch (err) {
-            console.error('Error fetching description:', err);
-            setError('Failed to load description. Please try again later.');
-            setDescription('Description loading failed.');
-        } finally {
-            setIsLoading(false);
-        }
-    }, [product.name, product.description]);
-
-    useEffect(() => {
-        fetchDescription();
-    }, [fetchDescription]);
-
-    return (
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105 flex flex-col h-full">
-            <img
-                src={product.image || getPlaceholderImage(400, 300, product.name)}
-                alt={product.name}
-                className="w-full h-48 object-cover"
-                onError={(e) => { e.target.src = getPlaceholderImage(400, 300, product.name); }}
-            />
-            <div className="p-6 flex flex-col flex-grow">
-                <h3 className="text-2xl font-semibold text-gray-800 mb-3">{product.name}</h3>
-                {isLoading ? (
-                    <p className="text-gray-600 italic animate-pulse">Loading description...</p>
-                ) : error ? (
-                    <p className="text-red-500">{error}</p>
-                ) : (
-                    <p className="text-gray-700 text-base mb-4 flex-grow">{description}</p>
-                )}
-                <div className="mt-auto"> {/* Pushes button to the bottom */}
-                    <button
-                        onClick={() => onEnquire(product)}
-                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-8 rounded-lg transition-colors duration-300 shadow-md transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50"
-                    >
-                        Enquire Now
-                    </button>
-                </div>
-            </div>
-        </div>
-    );
-};
-
-// Stone Category Page Component (reusable for Indian & Luxury)
-const StoneCategory = ({ categoryName, products, onEnquire }) => {
-    return (
-        <div className="container mx-auto p-8 my-8 bg-white rounded-xl shadow-lg">
-            <h2 className="text-4xl font-bold text-gray-800 mb-8 text-center">{categoryName}</h2>
-            {/* Changed grid to display 4 products per row on large screens */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                {products.map((product) => (
-                    <ProductCard key={product.name} product={product} onEnquire={onEnquire} />
-                ))}
-            </div>
-        </div>
-    );
-};
-
-// Enquiry Form Modal Component
-const EnquiryFormModal = ({ product, onClose, onSubmit }) => {
-    const [formData, setFormData] = useState({
-        email: '',
-        phone: '',
-        companyName: '',
-        thickness: '',
-        application: '',
-    });
-    const [submitMessage, setSubmitMessage] = useState('');
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({ ...prevData, [name]: value }));
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Simulate email sending: log data to console
-        console.log(`Enquiry for ${product.name}:`, formData);
-        setSubmitMessage('Your enquiry has been sent successfully! We will get back to you soon.');
-        // In a real application, you would send this data to your backend here
-        // e.g., fetch('/api/send-email', { method: 'POST', body: JSON.stringify(formData) });
-
-        // Optionally clear form or close modal after a delay
-        setTimeout(() => {
-            setFormData({
-                email: '',
-                phone: '',
-                companyName: '',
-                thickness: '',
-                application: '',
-            });
-            setSubmitMessage('');
-            onClose(); // Close the modal
-        }, 3000);
-    };
-
-    return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-lg relative transform transition-all duration-300 scale-100 opacity-100">
-                <button
-                    onClick={onClose}
-                    className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl"
-                >
-                    <i className="fas fa-times"></i>
-                </button>
-                <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">Enquire About {product.name}</h2>
-                {submitMessage && (
-                    <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-                        {submitMessage}
-                    </div>
-                )}
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    <div>
-                        <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">Email</label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-indigo-500"
-                            placeholder="your@example.com"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="phone" className="block text-gray-700 text-sm font-bold mb-2">Phone No.</label>
-                        <input
-                            type="tel"
-                            id="phone"
-                            name="phone"
-                            value={formData.phone}
-                            onChange={handleChange}
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-indigo-500"
-                            placeholder="e.g., +91 9876543210"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="companyName" className="block text-gray-700 text-sm font-bold mb-2">Company Name</label>
-                        <input
-                            type="text"
-                            id="companyName"
-                            name="companyName"
-                            value={formData.companyName}
-                            onChange={handleChange}
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-indigo-500"
-                            placeholder="Your Company Name"
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="thickness" className="block text-gray-700 text-sm font-bold mb-2">Thickness (e.g., in mm)</label>
-                        <input
-                            type="text"
-                            id="thickness"
-                            name="thickness"
-                            value={formData.thickness}
-                            onChange={handleChange}
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-indigo-500"
-                            placeholder="e.g., 18mm, 20mm"
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="application" className="block text-gray-700 text-sm font-bold mb-2">Application</label>
-                        <textarea
-                            id="application"
-                            name="application"
-                            value={formData.application}
-                            onChange={handleChange}
-                            rows="3"
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-indigo-500"
-                            placeholder="e.g., Kitchen Countertops, Flooring, Wall Cladding"
-                        ></textarea>
-                    </div>
-                    <button
-                        type="submit"
-                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 shadow-md transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-indigo-500 focus:ring-opacity-50"
-                    >
-                        Send Enquiry
-                    </button>
-                </form>
-            </div>
-        </div>
-    );
-};
-
-
-// Main App Component
 const App = () => {
-    const [currentPage, setCurrentPage] = useState('home');
-    const [showEnquiryModal, setShowEnquiryModal] = useState(false);
-    const [selectedProduct, setSelectedProduct] = useState(null);
+  const [currentPage, setCurrentPage] = useState(window.location.hash.slice(1) || "home");
+  const [formVisible, setFormVisible] = useState(false);
+  const [enquiryProduct, setEnquiryProduct] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    phone: "",
+    company: "",
+    thickness: "",
+    application: "",
+  });
 
-    // Define product data
-    const indianStoneProducts = [
-        { name: 'Indian Green Marble', image: getPlaceholderImage(400, 300, 'Indian Green Marble') },
-        { name: 'Bswada White (Wonder White)', image: getPlaceholderImage(400, 300, 'Bswada White') },
-        { name: 'Alaska White Granite', image: getPlaceholderImage(400, 300, 'Alaska White Granite') },
-        { name: 'Alaska Gold Granite', image: getPlaceholderImage(400, 300, 'Alaska Gold Granite') },
-        { name: 'Black Galaxy Granite', image: getPlaceholderImage(400, 300, 'Black Galaxy Granite') },
-        { name: 'Cat Eye Granite', image: getPlaceholderImage(400, 300, 'Cat Eye Granite') },
-        { name: 'Chima Pink Granite', image: getPlaceholderImage(400, 300, 'Chima Pink Granite') },
-        { name: 'Imperial Red Granite', image: getPlaceholderImage(400, 300, 'Imperial Red Granite') },
-        { name: 'Lakha Red Granite', image: getPlaceholderImage(400, 300, 'Lakha Red Granite') },
-        { name: 'Black Majestic Granite', image: getPlaceholderImage(400, 300, 'Black Majestic Granite') },
-        { name: 'Rosy Pink Granite', image: getPlaceholderImage(400, 300, 'Rosy Pink Granite') },
-        { name: 'P White', image: getPlaceholderImage(400, 300, 'P White') },
-        { name: 'Tigerskin Granite', image: getPlaceholderImage(400, 300, 'Tigerskin Granite') },
-        { name: 'Paradiso Brown Granite', image: getPlaceholderImage(400, 300, 'Paradiso Brown Granite') },
-        { name: 'Kashmir White Granite', image: getPlaceholderImage(400, 300, 'Kashmir White Granite') },
-    ];
+  // Track expanded descriptions per product
+  const [expandedDescriptions, setExpandedDescriptions] = useState({});
 
-    const luxuryStoneProducts = [
-        { name: 'Arabescato Marble', image: getPlaceholderImage(400, 300, 'Arabescato Marble') },
-        { name: 'The Armani Beige Marble', image: getPlaceholderImage(400, 300, 'Armani Beige Marble') },
-        { name: 'Armani Black Marble', image: getPlaceholderImage(400, 300, 'Armani Black Marble') },
-        { name: 'Armani Grey Marble', image: getPlaceholderImage(400, 300, 'Armani Grey Marble') },
-        { name: 'Black Marquina Marble', image: getPlaceholderImage(400, 300, 'Black Marquina Marble') },
-        { name: 'Bianco Lasa Marble', image: getPlaceholderImage(400, 300, 'Bianco Lasa Marble') },
-        { name: 'Calacatta Borghini Marble', image: getPlaceholderImage(400, 300, 'Calacatta Borghini Marble') },
-        { name: 'Calacatta Gold Marble', image: getPlaceholderImage(400, 300, 'Calacatta Gold Marble') },
-        { name: 'Calacatta Marble', image: getPlaceholderImage(400, 300, 'Calacatta Marble') },
-        { name: 'Carrara Marble', image: getPlaceholderImage(400, 300, 'Carrara Marble') },
-        { name: 'Italian Statuario Marble', image: getPlaceholderImage(400, 300, 'Italian Statuario Marble') },
-        { name: 'Panda White Marble', image: getPlaceholderImage(400, 300, 'Panda White Marble') },
-        { name: 'Statuario Venetino Marble', image: getPlaceholderImage(400, 300, 'Statuario Venetino Marble') },
-    ];
-
-    const handleEnquireClick = (product) => {
-        setSelectedProduct(product);
-        setShowEnquiryModal(true);
+  // Update page based on hash change
+  useEffect(() => {
+    const handleHashChange = () => {
+      setCurrentPage(window.location.hash.slice(1) || "home");
     };
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
 
-    const handleCloseEnquiryModal = () => {
-        setShowEnquiryModal(false);
-        setSelectedProduct(null);
-    };
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-    const handleEnquirySubmit = (formData) => {
-        // This function would typically send data to a backend
-        console.log('Enquiry submitted:', formData);
-        handleCloseEnquiryModal();
-    };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const mailtoLink = `mailto:rishabhjainca0789@gmail.com?subject=Enquiry%20for%20${encodeURIComponent(
+      enquiryProduct
+    )}&body=Email:%20${encodeURIComponent(formData.email)}%0DPhone:%20${encodeURIComponent(
+      formData.phone
+    )}%0DCompany%20Name:%20${encodeURIComponent(formData.company)}%0DThickness:%20${encodeURIComponent(
+      formData.thickness
+    )}%0DApplication:%20${encodeURIComponent(formData.application)}`;
+    window.location.href = mailtoLink;
+    setFormVisible(false);
+  };
 
-    // Render content based on currentPage state
-    const renderPage = () => {
-        switch (currentPage) {
-            case 'home':
-                return <Home setCurrentPage={setCurrentPage} />;
-            case 'about':
-                // Pass setCurrentPage to About component
-                return <About setCurrentPage={setCurrentPage} />;
-            case 'indian-stone':
-                return <StoneCategory categoryName="Indian Stone Collection" products={indianStoneProducts} onEnquire={handleEnquireClick} />;
-            case 'luxury-stone':
-                return <StoneCategory categoryName="Luxury Stone Collection" products={luxuryStoneProducts} onEnquire={handleEnquireClick} />;
-            case 'contact':
-                return <Contact />;
-            default:
-                return <Home setCurrentPage={setCurrentPage} />;
-        }
-    };
+  const toggleDescription = (productName) => {
+    setExpandedDescriptions((prev) => ({
+      ...prev,
+      [productName]: !prev[productName],
+    }));
+  };
 
-    return (
-        <div className="min-h-screen flex flex-col">
-            <Navbar currentPage={currentPage} setCurrentPage={setCurrentPage} />
-            <main className="flex-grow">
-                {renderPage()}
-            </main>
-            {showEnquiryModal && selectedProduct && (
-                <EnquiryFormModal
-                    product={selectedProduct}
-                    onClose={handleCloseEnquiryModal}
-                    onSubmit={handleEnquirySubmit}
-                />
-            )}
+  // Indian Stones with custom descriptions
+  const productsIndian = [
+    {
+      name: "Indian Green Marble",
+      description:
+        "Indian Green Marble is a rich, deep green natural stone known for its elegant veining and polished finish. Quarried in Rajasthan, it is highly durable, stain-resistant, and ideal for flooring, countertops, and wall cladding in both residential and commercial spaces."
+    },
+    {
+      name: "Bawada White (Wonder White)",
+      description:
+        "Bawada White, also known as Wonder White, is a premium white marble sourced from Rajasthan. With its clean, snowy base and smooth polish, it reflects light beautifully and adds a luxurious charm to any space — ideal for flooring, walls, and decorative accents."
+    },
+    {
+      name: "Alaska White Granite",
+      description:
+        "Alaska White Granite is a sophisticated stone with a frosty white background and contrasting dark mineral patterns. Its subtle sparkle and durability make it a popular choice for kitchen countertops and modern interiors."
+    },
+    {
+      name: "Alaska Gold Granite",
+      description:
+        "This granite features a rich blend of golden and beige hues with scattered dark veins. Alaska Gold adds warmth and character to any space and is often used for vanity tops, flooring, and wall cladding."
+    },
+    {
+      name: "Black Galaxy Granite",
+      description:
+        "Black Galaxy Granite is a striking black stone filled with golden or silver specks, resembling a starry night sky. Durable and stylish, it’s perfect for kitchen countertops, tabletops, and facades."
+    },
+    {
+      name: "Cat Eye Granite",
+      description:
+        "Cat Eye Granite gets its name from the unique circular patterns that resemble a cat’s eye. With reddish-black hues and a polished surface, it’s ideal for bold interior and exterior designs."
+    },
+    {
+      name: "Chima Pink Granite",
+      description:
+        "Chima Pink is a light pink granite with fine black and white mineral patterns. Known for its consistency and polish, it is a widely used stone for flooring, cladding, and kitchen counters."
+    },
+    {
+      name: "Imperial Red Granite",
+      description:
+        "A majestic granite with intense red color and contrasting black and white grains. Imperial Red is a favorite for creating powerful, standout features in both interior and exterior settings."
+    },
+    {
+      name: "Lakha Red Granite",
+      description:
+        "Lakha Red Granite boasts a rich crimson background with fine black specks. Its bold appearance and weather resistance make it a popular choice for monuments and high-traffic flooring."
+    },
+    {
+      name: "Black Majestic Granite",
+      description:
+        "This elegant granite offers a deep black base with subtle mineral flecks. With its luxurious sheen and timeless look, it’s perfect for creating a sleek and modern atmosphere."
+    },
+    {
+      name: "Rosy Pink Granite",
+      description:
+        "Rosy Pink Granite features a light pink tone with black and grey grains, adding a soft and charming touch to interiors. It is commonly used in residential flooring, countertops, and exterior paving."
+    },
+    {
+      name: "P White Granite",
+      description:
+        "P White Granite is a clean, pale white stone with evenly distributed grey and black speckles. It’s known for its simplicity, making it suitable for minimalist and contemporary spaces."
+    },
+    {
+      name: "Tiger Skin Granite",
+      description:
+        "With bold patterns of brown, yellow, and black resembling tiger stripes, Tiger Skin Granite makes a dramatic statement. It’s a great choice for feature walls and rustic interiors."
+    },
+    {
+      name: "Paradiso Brown Granite",
+      description:
+        "Paradiso Brown is a beautiful mix of earthy browns, greys, and purples in swirling patterns. Its exotic appearance makes it a popular option for luxury flooring and countertops."
+    },
+    {
+      name: "Kashmir White Granite",
+      description:
+        "Kashmir White features a creamy white background with grey veins and occasional burgundy specks. It provides a soft and elegant appearance, ideal for sophisticated interior spaces."
+    }
+  ];
+
+  // Luxury Stones with custom descriptions
+  const productsLuxury = [
+    {
+      name: "Arabescato Marble",
+      description:
+        "Arabescato is an Italian marble with dramatic swirling grey veins over a soft white background. It combines the beauty of Calacatta and Carrara, making it ideal for luxury kitchens and designer accents."
+    },
+    {
+      name: "The Armani Beige Marble",
+      description:
+        "This beige marble presents a soothing neutral tone with delicate veining, offering a luxurious but calming presence. It’s commonly used in upscale bathrooms, floors, and spa areas."
+    },
+    {
+      name: "Armani Black Marble",
+      description:
+        "With a rich black tone and fine white lines, Armani Black Marble exudes elegance and power. It is ideal for high-end countertops, fireplace surrounds, and feature walls."
+    },
+    {
+      name: "Armani Grey Marble",
+      description:
+        "Armani Grey is a refined marble with warm grey tones and subtle white veining. Its understated luxury makes it suitable for wall panels, bathroom surfaces, and contemporary interiors."
+    },
+    {
+      name: "Black Marquina Marble",
+      description:
+        "This deep black Spanish marble is adorned with brilliant white veining, offering a bold, luxurious look. Perfect for sleek modern interiors, feature walls, and sophisticated flooring."
+    },
+    {
+      name: "Bianco Lasa Marble",
+      description:
+        "Bianco Lasa, also known as Lasa White, is an elegant marble with fine grey veins flowing across a pure white canvas. It’s admired for its clean, minimal appearance and premium quality."
+    },
+    {
+      name: "Calacatta Borghini Marble",
+      description:
+        "Calacatta Borghini is a high-end Italian marble with a bright white background and fluid grey veins, sometimes tinged with gold. It’s a designer favorite for high-contrast luxury interiors."
+    },
+    {
+      name: "Calacatta Gold Marble",
+      description:
+        "A premium version of Calacatta, this marble is known for its golden and grey veins over a crisp white base. It exudes warmth and sophistication, making it a top choice for luxury living spaces."
+    },
+    {
+      name: "Calacatta Marble",
+      description:
+        "Calacatta Marble features a white background with bold, dramatic veining in grey or gold. This rare and luxurious marble is perfect for upscale interiors, especially kitchen islands and bathroom spaces."
+    },
+    {
+      name: "Carrara Marble",
+      description:
+        "Carrara Marble is a classic white marble with soft grey veining, sourced from the Carrara region of Italy. Elegant and timeless, it is ideal for countertops, backsplashes, and elegant flooring."
+    },
+    {
+      name: "Italian Statuario Marble",
+      description:
+        "One of the most prestigious white marbles, Italian Statuario combines a bright background with rich grey veining. It’s often used in premium interiors, luxury bathrooms, and artistic applications."
+    },
+    {
+      name: "Panda White Marble",
+      description:
+        "Panda White Marble features a striking contrast of bold black streaks across a crisp white base. Its contemporary look makes it a favorite for accent walls, bathroom vanities, and stylish tabletops."
+    },
+    {
+      name: "Statuario Venetino Marble",
+      description:
+        "Statuario Venetino is an exquisite Italian marble known for its pure white background and dramatic grey veining. This luxurious stone is perfect for statement walls, high-end bathrooms, and designer flooring."
+    }
+  ];
+
+  const renderNavbar = () => (
+    <nav className="bg-white shadow-md fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center">
+      {/* Logo Section */}
+      <div>
+        <h1 className="text-3xl font-bold text-gray-900 tracking-wide">
+          <span className="text-amber-600">Mayura</span> StoneX
+        </h1>
+        <p className="text-sm text-gray-600 mt-1">Trusted by architects and builders all across the world</p>
+      </div>
+
+      {/* Navigation Links */}
+      <div className="flex space-x-6 text-lg font-medium">
+        <a href="#home" className="hover:text-amber-600 transition">Home</a>
+        <a href="#about" className="hover:text-amber-600 transition">About</a>
+        <a href="#indianstone" className="hover:text-amber-600 transition">Indian Stone</a>
+        <a href="#luxurystone" className="hover:text-amber-600 transition">Luxury Stone</a>
+        <a href="#contact" className="hover:text-amber-600 transition">Contact</a>
+      </div>
+    </nav>
+  );
+
+  const renderHero = () => (
+    <section className="pt-40 h-screen bg-gray-100 relative overflow-hidden">
+      {renderNavbar()}
+      <div className="absolute inset-0 bg-cover bg-center"
+           style={{ backgroundImage: "https://placehold.co/1600x900"  }}>
+        <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center px-6">
+          <div className="text-center max-w-xl">
+            <h1 className="text-white text-4xl sm:text-5xl font-bold mb-4">Premium Indian & Luxury Stones</h1>
+            <p className="text-white text-lg mb-8">Sourced for excellence. Exported globally to Africa, Europe, Asia & the Middle East.</p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a href="#indianstone" className="bg-amber-600 hover:bg-amber-700 text-white px-6 py-3 rounded-full transition">
+                Discover Indian Stone
+              </a>
+              <a href="#luxurystone" className="bg-white hover:bg-gray-100 text-amber-600 px-6 py-3 rounded-full border border-white shadow transition">
+                Explore Luxury Stone
+              </a>
+            </div>
+          </div>
         </div>
-    );
+      </div>
+    </section>
+  );
+
+  const renderProducts = (products, title) => (
+    <section className="py-16 bg-white">
+      <div className="container mx-auto px-6">
+        <h2 className="text-3xl font-semibold mb-8 text-center">{title}</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          {products.map((product, index) => (
+            <div key={index} className="border rounded-lg overflow-hidden shadow hover:shadow-xl transition duration-300">
+              <img src={`https://placehold.co/300x200?text=${encodeURIComponent(product.name)}`} alt={product.name} className="w-full h-40 object-cover" />
+              <div className="p-4">
+                <h3 className="font-bold text-lg">{product.name}</h3>
+                <p
+                  className={`text-sm text-gray-600 mt-2 overflow-hidden ${
+                    expandedDescriptions[product.name] ? "" : "line-clamp-3"
+                  }`}
+                >
+                  {product.description}
+                </p>
+                <button
+                  onClick={() => toggleDescription(product.name)}
+                  className="text-xs text-amber-600 mt-1 hover:underline"
+                >
+                  {expandedDescriptions[product.name] ? "Show less" : "Read more"}
+                </button>
+                <button
+                  onClick={() => { setEnquiryProduct(product.name); setFormVisible(true); }}
+                  className="mt-4 bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700 transition w-full"
+                >
+                  Enquire Now
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+
+  const renderAbout = () => (
+    <section className="py-16 bg-gray-50">
+      <div className="container mx-auto px-6">
+        <h2 className="text-3xl font-semibold mb-6 text-center">About Mayura StoneX</h2>
+        <p className="text-gray-700 leading-relaxed max-w-3xl mx-auto text-center">
+          Mayura StoneX is a global leader in the export of premium marble and granite sourced from India and around the world. Our commitment to quality, precision, and customer satisfaction has made us a trusted name across Africa, Europe, Asia, and beyond. With decades of expertise, we deliver exquisite natural stones tailored to luxury homes, commercial buildings, and architectural masterpieces.
+        </p>
+      </div>
+    </section>
+  );
+
+  const renderContact = () => (
+    <section className="py-16 bg-white">
+      <div className="container mx-auto px-6">
+        <h2 className="text-3xl font-semibold mb-6 text-center">Contact Us</h2>
+        <form onSubmit={(e) => {
+          e.preventDefault();
+          const mailtoLink = `mailto:rishabhjainca0789@gmail.com?subject=New%20Inquiry&body=Email:%20${encodeURIComponent(formData.email)}%0DPhone:%20${encodeURIComponent(formData.phone)}%0DCompany%20Name:%20${encodeURIComponent(formData.company)}%0DMessage:%20${encodeURIComponent(formData.application)}`;
+          window.location.href = mailtoLink;
+        }} className="max-w-lg mx-auto">
+          <div className="mb-4">
+            <label className="block text-gray-700 mb-2">Email</label>
+            <input type="email" name="email" required onChange={handleChange} value={formData.email}
+                   className="w-full border px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-amber-200" />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 mb-2">Phone No.</label>
+            <input type="tel" name="phone" required onChange={handleChange} value={formData.phone}
+                   className="w-full border px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-amber-200" />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 mb-2">Company Name</label>
+            <input type="text" name="company" required onChange={handleChange} value={formData.company}
+                   className="w-full border px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-amber-200" />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 mb-2">Message</label>
+            <textarea name="application" required onChange={handleChange} value={formData.application}
+                      className="w-full border px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-amber-200"></textarea>
+          </div>
+          <button type="submit" className="bg-amber-600 text-white px-6 py-2 rounded hover:bg-amber-700 transition w-full">
+            Send Message
+          </button>
+        </form>
+      </div>
+    </section>
+  );
+
+  const renderModal = () => (
+    formVisible && (
+      <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
+        <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+          <h3 className="text-xl font-semibold mb-4">Enquire for: {enquiryProduct}</h3>
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2">Email</label>
+              <input type="email" name="email" required onChange={handleChange} value={formData.email}
+                     className="w-full border px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-amber-200" />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2">Phone No.</label>
+              <input type="tel" name="phone" required onChange={handleChange} value={formData.phone}
+                     className="w-full border px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-amber-200" />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2">Company Name</label>
+              <input type="text" name="company" required onChange={handleChange} value={formData.company}
+                     className="w-full border px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-amber-200" />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2">Thickness</label>
+              <input type="text" name="thickness" required onChange={handleChange} value={formData.thickness}
+                     className="w-full border px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-amber-200" />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 mb-2">Application</label>
+              <input type="text" name="application" required onChange={handleChange} value={formData.application}
+                     className="w-full border px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-amber-200" />
+            </div>
+            <div className="flex justify-end space-x-3">
+              <button type="button" onClick={() => setFormVisible(false)}
+                      className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-300 transition">
+                Cancel
+              </button>
+              <button type="submit" className="bg-amber-600 text-white px-4 py-2 rounded hover:bg-amber-700 transition">
+                Send Enquiry
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    )
+  );
+
+  return (
+    <div className="min-h-screen bg-white">
+      {currentPage === "home" && renderHero()}
+      {currentPage !== "home" && (
+        <>
+          {renderNavbar()}
+        </>
+      )}
+      <main>
+        {currentPage === "about" && renderAbout()}
+        {currentPage === "indianstone" && renderProducts(productsIndian, "Indian Stones")}
+        {currentPage === "luxurystone" && renderProducts(productsLuxury, "Luxury Stones")}
+        {currentPage === "contact" && renderContact()}
+      </main>
+      {renderModal()}
+    </div>
+  );
 };
 
 export default App;
